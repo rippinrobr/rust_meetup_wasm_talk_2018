@@ -1,0 +1,15 @@
+{
+  "name": "rust-meetup-wasm-talk",
+  "collaborators": [
+    "Rob Rowe <robrowe04@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "rust_meetup_wasm_talk_bg.wasm",
+    "rust_meetup_wasm_talk.js",
+    "rust_meetup_wasm_talk.d.ts"
+  ],
+  "module": "rust_meetup_wasm_talk.js",
+  "types": "rust_meetup_wasm_talk.d.ts",
+  "sideEffects": "false"
+}
