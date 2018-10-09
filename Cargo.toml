@@ -3,6 +3,9 @@ name = "rust-meetup-wasm-talk"
 version = "0.1.0"
 authors = ["Rob Rowe <robrowe04@gmail.com>"]
 
+# [profile.release]
+# debug = true
+
 [lib]
 crate-type = ["cdylib"]
 
