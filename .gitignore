@@ -1,3 +1,10 @@
 /target
 **/*.rs.bk
 Cargo.lock
+.appveyor.yml
+.travis.yml
+Notes/
+bin/
+expanded_macros.go
+expanded_macros.txt
+wasm-pack.log

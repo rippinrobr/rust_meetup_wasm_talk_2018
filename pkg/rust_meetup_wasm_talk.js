@@ -228,17 +228,6 @@ export function __widl_f_get_element_by_id_Document(arg0, arg1, arg2) {
 
 }
 
-const __widl_f_body_Document_target = GetOwnOrInheritedPropertyDescriptor(Document.prototype, 'body').get || function() {
-    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(Document.prototype, 'body').get does not exist`);
-};
-
-export function __widl_f_body_Document(arg0) {
-
-    const val = __widl_f_body_Document_target.call(getObject(arg0));
-    return isLikeNone(val) ? 0 : addHeapObject(val);
-
-}
-
 const __widl_f_set_attribute_Element_target = Element.prototype.setAttribute || function() {
     throw new Error(`wasm-bindgen: Element.prototype.setAttribute does not exist`);
 };
