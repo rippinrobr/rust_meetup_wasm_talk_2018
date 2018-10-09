@@ -4,9 +4,11 @@ extern crate web_sys;
 extern crate js_sys;
 
 mod utils;
+pub mod config;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
+use config::Pattern;
 
 #[wasm_bindgen]
 extern "C" {
@@ -16,79 +18,46 @@ extern "C" {
     fn log(msg: &str);
 }
 
-#[wasm_bindgen]
-#[derive(Debug, Clone)]
-pub struct Pattern {
-    bgcolor: JsValue,
-    line_color: JsValue,
-    label_color: JsValue,
-    mod_height: u32,
-    mod_width: u32,
-    mods_per_cabinet: u32,
-    num_cabinets: u32,
-}
 
 #[wasm_bindgen]
-impl Pattern {
-    pub fn new(bgcolor: JsValue, line_color: JsValue, label_color: JsValue, mod_h: u32, mod_w: u32, mod_per_cabs: u32, num_cabs: u32) -> Pattern {
-        Pattern {
-            bgcolor: bgcolor,
-            line_color: line_color,
-            label_color: label_color,
-            mod_height: mod_h,
-            mod_width: mod_w,
-            mods_per_cabinet: mod_per_cabs,
-            num_cabinets: num_cabs,
-        }
-    }
-}
+pub fn init() {
+    let window = web_sys::window().expect("no global `window` exists");
+    let document = window.document().expect("should have a document on window");
+    let delete_btn = document.get_element_by_id("delete-image").unwrap();
+    delete_btn.set_attribute("style", "display:none;").unwrap();
 
-impl Pattern {
-    fn get_cabinet_height(&self) -> u32 {
-        self.mod_height * (self.mods_per_cabinet / 2)
-    }
+    let doc = document.clone();
+    let btn = delete_btn.clone();
+    let delete_cb_closure = Closure::wrap(Box::new(move |_: web_sys::MouseEvent| {
+        if let Some(elem)  = doc.get_element_by_id("test-pattern") {
+            elem.remove();
+            btn.set_attribute("style", "display:none;").unwrap();
+        };
+    }) as Box<FnMut(_)>);
 
-    pub fn get_cabinet_width(&self) -> u32 {
-        self.mod_width * (self.mods_per_cabinet / 2)
-    }
-
-    pub fn get_mod_height(&self) -> u32 {
-        self.mod_height
-    }
-
-    pub fn get_mod_width(&self) -> u32 {
-        self.mod_width
-    }
-
-    pub fn get_num_cabinets(&self) -> u32 {
-        self.num_cabinets
-    }
-
-    pub fn width(&self) -> u32 {
-        self.get_cabinet_width() * self.num_cabinets
-    }
-
-    pub fn height(&self) -> u32 {
-        self.get_cabinet_height()
-    }
-
-    pub fn get_num_mods_per_cabinet(&self) -> u32 {
-        self.mods_per_cabinet
-    }
-}
-
-#[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, rust-meetup-wasm-talk!");
+    (delete_btn.as_ref() as &web_sys::EventTarget)
+        .add_event_listener_with_callback("click", delete_cb_closure.as_ref().unchecked_ref())
+        .unwrap();
+    delete_cb_closure.forget();
 }
 
 #[wasm_bindgen]
 pub fn draw(pattern: &Pattern) {
     let window = web_sys::window().expect("no global `window` exists");
     let document = window.document().expect("should have a document on window");
-    let canvas = document
+    let delete_btn = document.get_element_by_id("delete-image").unwrap();
+
+    // delete the previous image if the test-pattern canvas is there
+    if let Some(elem)  = document.get_element_by_id("test-pattern") {
+        elem.remove();
+    };
+
+    let canvasElem = document
         .create_element("canvas")
-        .unwrap()
+        .unwrap();
+    canvasElem.set_attribute("id", "test-pattern").unwrap();
+
+    let canvas = canvasElem
         .dyn_into::<web_sys::HtmlCanvasElement>()
         .map_err(|_| ())
         .unwrap();
@@ -116,13 +85,13 @@ pub fn draw(pattern: &Pattern) {
     let half_height = *height as f64/2.0;
 
     // background color & text attributes
-    context.set_fill_style(&pattern.bgcolor);
+    context.set_fill_style(&pattern.get_bgcolor());
     context.fill_rect(0.0, 0.0, pattern.width() as f64, pattern.height() as f64);
     context.set_text_align("left");
     context.set_font("18px san serif");
 
     // setup the line color and draw the middle line
-    context.set_stroke_style( &pattern.line_color );
+    context.set_stroke_style( &pattern.get_line_color() );
     context.move_to(0.0, half_height);
     context.line_to(*width as f64, half_height); 
     context.stroke();   
@@ -146,9 +115,8 @@ pub fn draw(pattern: &Pattern) {
             context.stroke();  
 
             let label = &format!("{}{}", letters[(cidx % 27) as usize], midx+1);
-            let text_x = x + (mod_w as f64/5.0);
+            let text_x = x + (mod_w as f64/2.7);
             let text_y = y + (mod_h as f64/1.6);
-            log(&format!("text_x: {}", text_x));
             match context.stroke_text_with_max_width(label, text_x , text_y, mod_w as f64) {
                 Err(e) => log(&format!("label error: {:#?}", e)),
                 _ => ()
@@ -158,25 +126,7 @@ pub fn draw(pattern: &Pattern) {
         }
         
     }
+    delete_btn.set_attribute("style", "display:'';").unwrap();
 }
 
-#[wasm_bindgen]
-pub fn add_html(msg: &str) -> Result<(), JsValue> {
-    // Use `web_sys`'s global `window` function to get a handle on the global
-    // window object.
-    let window = web_sys::window().expect("no global `window` exists");
-    let document = window.document().expect("should have a document on window");
-    let body = document.body().expect("document should have a body");
-
-    // Manufacture the element we're gonna append
-    let val = document.create_element("p")?;
-    val.set_inner_html(msg);
-
-    // Right now the class inheritance hierarchy of the DOM isn't super
-    // ergonomic, so we manually cast `val: Element` to `&Node` to call the
-    // `append_child` method.
-    AsRef::<web_sys::Node>::as_ref(&body).append_child(val.as_ref())?;
-
-    Ok(())
-}
 

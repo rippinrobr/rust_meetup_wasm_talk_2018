@@ -1,9 +1,9 @@
 /* tslint:disable */
-export function greet(): void;
+export function init(): void;
 
 export function draw(arg0: Pattern): void;
 
-export function add_html(arg0: string): void;
+export function popup(): void;
 
 export class Pattern {
 free(): void;

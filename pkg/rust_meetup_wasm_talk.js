@@ -26,6 +26,27 @@ export function __wbg_log_08f6471963464870(arg0, arg1) {
     let varg0 = getStringFromWasm(arg0, arg1);
     __wbg_log_08f6471963464870_target(varg0);
 }
+/**
+* @returns {void}
+*/
+export function init() {
+    return wasm.init();
+}
+
+/**
+* @param {Pattern} arg0
+* @returns {void}
+*/
+export function draw(arg0) {
+    return wasm.draw(arg0.ptr);
+}
+
+/**
+* @returns {void}
+*/
+export function popup() {
+    return wasm.popup();
+}
 
 const slab = [{ obj: undefined }, { obj: null }, { obj: true }, { obj: false }];
 
@@ -40,45 +61,6 @@ function addHeapObject(obj) {
 
     slab[idx] = { obj, cnt: 1 };
     return idx << 1;
-}
-/**
-* @returns {void}
-*/
-export function greet() {
-    return wasm.greet();
-}
-
-/**
-* @param {Pattern} arg0
-* @returns {void}
-*/
-export function draw(arg0) {
-    return wasm.draw(arg0.ptr);
-}
-
-let cachedEncoder = new TextEncoder('utf-8');
-
-function passStringToWasm(arg) {
-
-    const buf = cachedEncoder.encode(arg);
-    const ptr = wasm.__wbindgen_malloc(buf.length);
-    getUint8Memory().set(buf, ptr);
-    return [ptr, buf.length];
-}
-/**
-* @param {string} arg0
-* @returns {void}
-*/
-export function add_html(arg0) {
-    const [ptr0, len0] = passStringToWasm(arg0);
-    try {
-        return wasm.add_html(ptr0, len0);
-
-    } finally {
-        wasm.__wbindgen_free(ptr0, len0 * 1);
-
-    }
-
 }
 
 const __widl_f_set_property_CSSStyleDeclaration_target = CSSStyleDeclaration.prototype.setProperty || function() {
@@ -230,13 +212,25 @@ export function __widl_f_create_element_Document(arg0, arg1, arg2, exnptr) {
     }
 }
 
-const __widl_f_body_Document_target = GetOwnOrInheritedPropertyDescriptor(Document.prototype, 'body').get || function() {
-    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(Document.prototype, 'body').get does not exist`);
+const __widl_f_get_element_by_id_Document_target = Document.prototype.getElementById || function() {
+    throw new Error(`wasm-bindgen: Document.prototype.getElementById does not exist`);
 };
 
 function isLikeNone(x) {
     return x === undefined || x === null;
 }
+
+export function __widl_f_get_element_by_id_Document(arg0, arg1, arg2) {
+    let varg1 = getStringFromWasm(arg1, arg2);
+
+    const val = __widl_f_get_element_by_id_Document_target.call(getObject(arg0), varg1);
+    return isLikeNone(val) ? 0 : addHeapObject(val);
+
+}
+
+const __widl_f_body_Document_target = GetOwnOrInheritedPropertyDescriptor(Document.prototype, 'body').get || function() {
+    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(Document.prototype, 'body').get does not exist`);
+};
 
 export function __widl_f_body_Document(arg0) {
 
@@ -245,13 +239,45 @@ export function __widl_f_body_Document(arg0) {
 
 }
 
-const __widl_f_set_inner_html_Element_target = GetOwnOrInheritedPropertyDescriptor(Element.prototype, 'innerHTML').set || function() {
-    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(Element.prototype, 'innerHTML').set does not exist`);
+const __widl_f_set_attribute_Element_target = Element.prototype.setAttribute || function() {
+    throw new Error(`wasm-bindgen: Element.prototype.setAttribute does not exist`);
 };
 
-export function __widl_f_set_inner_html_Element(arg0, arg1, arg2) {
+export function __widl_f_set_attribute_Element(arg0, arg1, arg2, arg3, arg4, exnptr) {
     let varg1 = getStringFromWasm(arg1, arg2);
-    __widl_f_set_inner_html_Element_target.call(getObject(arg0), varg1);
+    let varg3 = getStringFromWasm(arg3, arg4);
+    try {
+        __widl_f_set_attribute_Element_target.call(getObject(arg0), varg1, varg3);
+    } catch (e) {
+        const view = getUint32Memory();
+        view[exnptr / 4] = 1;
+        view[exnptr / 4 + 1] = addHeapObject(e);
+
+    }
+}
+
+const __widl_f_remove_Element_target = Element.prototype.remove || function() {
+    throw new Error(`wasm-bindgen: Element.prototype.remove does not exist`);
+};
+
+export function __widl_f_remove_Element(arg0) {
+    __widl_f_remove_Element_target.call(getObject(arg0));
+}
+
+const __widl_f_add_event_listener_with_callback_EventTarget_target = EventTarget.prototype.addEventListener || function() {
+    throw new Error(`wasm-bindgen: EventTarget.prototype.addEventListener does not exist`);
+};
+
+export function __widl_f_add_event_listener_with_callback_EventTarget(arg0, arg1, arg2, arg3, exnptr) {
+    let varg1 = getStringFromWasm(arg1, arg2);
+    try {
+        __widl_f_add_event_listener_with_callback_EventTarget_target.call(getObject(arg0), varg1, getObject(arg3));
+    } catch (e) {
+        const view = getUint32Memory();
+        view[exnptr / 4] = 1;
+        view[exnptr / 4 + 1] = addHeapObject(e);
+
+    }
 }
 
 export function __widl_instanceof_HTMLCanvasElement(idx) {
@@ -443,6 +469,16 @@ export function __wbindgen_is_symbol(i) {
     return typeof(getObject(i)) === 'symbol' ? 1 : 0;
 }
 
+let cachedEncoder = new TextEncoder('utf-8');
+
+function passStringToWasm(arg) {
+
+    const buf = cachedEncoder.encode(arg);
+    const ptr = wasm.__wbindgen_malloc(buf.length);
+    getUint8Memory().set(buf, ptr);
+    return [ptr, buf.length];
+}
+
 export function __wbindgen_string_get(i, len_ptr) {
     let obj = getObject(i);
     if (typeof(obj) !== 'string') return 0;
@@ -451,13 +487,29 @@ export function __wbindgen_string_get(i, len_ptr) {
     return ptr;
 }
 
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropRef(idx);
-    return ret;
+export function __wbindgen_cb_forget(i) {
+    dropRef(i);
 }
 
-export function __wbindgen_rethrow(idx) { throw takeObject(idx); }
+export function __wbindgen_closure_wrapper26(ptr, f, _ignored) {
+    let cb = function(arg0) {
+        let a = this.a;
+        this.a = 0;
+        try {
+            return this.f(a, addHeapObject(arg0));
+
+        } finally {
+            this.a = a;
+
+        }
+
+    };
+    cb.f = wasm.__wbg_function_table.get(f);
+    cb.a = ptr;
+    let real = cb.bind(cb);
+    real.original = cb;
+    return addHeapObject(real);
+}
 
 export function __wbindgen_throw(ptr, len) {
     throw new Error(getStringFromWasm(ptr, len));
