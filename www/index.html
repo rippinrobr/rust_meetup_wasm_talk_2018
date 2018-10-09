@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title>Rust Meetup Talk - Test Pattern Generator</title>
+    <style>
+        .nav-item { padding-left: 1em; padding-top:0.5em;}
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link href="http://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://getbootstrap.com/docs/4.1/examples/dashboard/dashboard.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Test Pattern Generator</a>
+      <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="https://github.com/rippinrobr/rust_meetup_wasm_talk_2018" target="_blank">Github Repo</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    Mod Width: <input type="text" id="mod_w" value="64"/>
+                </li>
+                <li class="nav-item">
+                    Mod Height: <input type="text" id="mod_h" value="64"/>
+                </li>
+                <li class="nav-item">
+                    # of Mods in Cabinet: <input type="text" id="num_mods_in_cab" value="4"/>
+                </li>
+                <li class="nav-item">
+                    # of Cabinets: <input type="text" id="cab_count" value="4"/>
+                </li>
+                <li class="nav-item">
+                        background color: <input type="text" id="bgcolor" value="#f0f0f0" />
+                </li>
+                <li class="nav-item">
+                    line color: <input type="text" id="line_color" value="#000000" />
+                </li>
+                <li class="nav-item">
+                    label color: <input type="text" id="label_color" value="#ffffff" />
+                </li>
+                <li class="nav-item">
+                    <button id="draw-image" class="btn btn-sm btn-outline-secondary">Draw!</button>
+                    <button id="delete-image" class="btn btn-sm btn-outline-secondary">Delete Image</button>
+                </li>
+            </ul>
+
+            <ul class="nav flex-column mb-2">
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <h2>Generated Test Pattern</h2>
+          </div>
+          <div id="instructions">
+              <p>Customize your image by adding your configuration to the form on the left. When you are ready, click the draw button to see your image</p>
+          </div>
+          <div id="canvas-wrapper"></div>
+          </div>
+        </main>
+      </div>
+    </div>
+      <script src="./bootstrap.js"></script>
+    </body>
+</html>

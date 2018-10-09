@@ -20,6 +20,8 @@ extern "C" {
 
 #[wasm_bindgen]
 pub fn init() {
+    utils::set_panic_hook();
+    
     let window = web_sys::window().expect("no global `window` exists");
     let document = window.document().expect("should have a document on window");
     let delete_btn = document.get_element_by_id("delete-image").unwrap();
@@ -44,6 +46,7 @@ pub fn init() {
 pub fn draw(pattern: &Pattern) {
     let window = web_sys::window().expect("no global `window` exists");
     let document = window.document().expect("should have a document on window");
+    let img_wrapper = document.get_element_by_id("canvas-wrapper").unwrap();
     let delete_btn = document.get_element_by_id("delete-image").unwrap();
 
     // delete the previous image if the test-pattern canvas is there
@@ -61,7 +64,8 @@ pub fn draw(pattern: &Pattern) {
         .map_err(|_| ())
         .unwrap();
 
-    (document.body().unwrap().as_ref() as &web_sys::Node)
+    //(document.body().unwrap().as_ref() as &web_sys::Node)
+    (img_wrapper.as_ref() as &web_sys::Node)
         .append_child(canvas.as_ref() as &web_sys::Node)
         .unwrap();
 
