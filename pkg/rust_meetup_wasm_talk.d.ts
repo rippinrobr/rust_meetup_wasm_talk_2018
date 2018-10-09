@@ -1,6 +1,4 @@
 /* tslint:disable */
-export function init(): void;
-
 export function draw(arg0: Pattern): void;
 
 export function popup(): void;

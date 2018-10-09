@@ -27,13 +27,6 @@ export function __wbg_log_08f6471963464870(arg0, arg1) {
     __wbg_log_08f6471963464870_target(varg0);
 }
 /**
-* @returns {void}
-*/
-export function init() {
-    return wasm.init();
-}
-
-/**
 * @param {Pattern} arg0
 * @returns {void}
 */
@@ -264,22 +257,6 @@ export function __widl_f_remove_Element(arg0) {
     __widl_f_remove_Element_target.call(getObject(arg0));
 }
 
-const __widl_f_add_event_listener_with_callback_EventTarget_target = EventTarget.prototype.addEventListener || function() {
-    throw new Error(`wasm-bindgen: EventTarget.prototype.addEventListener does not exist`);
-};
-
-export function __widl_f_add_event_listener_with_callback_EventTarget(arg0, arg1, arg2, arg3, exnptr) {
-    let varg1 = getStringFromWasm(arg1, arg2);
-    try {
-        __widl_f_add_event_listener_with_callback_EventTarget_target.call(getObject(arg0), varg1, getObject(arg3));
-    } catch (e) {
-        const view = getUint32Memory();
-        view[exnptr / 4] = 1;
-        view[exnptr / 4 + 1] = addHeapObject(e);
-
-    }
-}
-
 export function __widl_instanceof_HTMLCanvasElement(idx) {
     return getObject(idx) instanceof HTMLCanvasElement ? 1 : 0;
 }
@@ -485,30 +462,6 @@ export function __wbindgen_string_get(i, len_ptr) {
     const [ptr, len] = passStringToWasm(obj);
     getUint32Memory()[len_ptr / 4] = len;
     return ptr;
-}
-
-export function __wbindgen_cb_forget(i) {
-    dropRef(i);
-}
-
-export function __wbindgen_closure_wrapper26(ptr, f, _ignored) {
-    let cb = function(arg0) {
-        let a = this.a;
-        this.a = 0;
-        try {
-            return this.f(a, addHeapObject(arg0));
-
-        } finally {
-            this.a = a;
-
-        }
-
-    };
-    cb.f = wasm.__wbg_function_table.get(f);
-    cb.a = ptr;
-    let real = cb.bind(cb);
-    real.original = cb;
-    return addHeapObject(real);
 }
 
 export function __wbindgen_throw(ptr, len) {

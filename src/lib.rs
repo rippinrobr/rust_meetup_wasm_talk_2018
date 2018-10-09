@@ -10,6 +10,7 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use config::Pattern;
 
+
 #[wasm_bindgen]
 extern "C" {
     fn alert(s: &str);
@@ -20,6 +21,7 @@ extern "C" {
 
 
 #[wasm_bindgen]
+#[cfg(feature = "console_error_panic_hook")]
 pub fn init() {
     let window = web_sys::window().expect("no global `window` exists");
     let document = window.document().expect("should have a document on window");
@@ -42,6 +44,7 @@ pub fn init() {
 }
 
 #[wasm_bindgen]
+#[cfg(feature = "console_error_panic_hook")]
 pub fn draw(pattern: &Pattern) {
     let window = web_sys::window().expect("no global `window` exists");
     let document = window.document().expect("should have a document on window");
