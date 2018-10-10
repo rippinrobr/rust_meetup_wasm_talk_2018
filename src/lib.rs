@@ -113,6 +113,8 @@ pub fn draw(pattern: &Pattern) {
         for midx in 0..mods_per {
             let x: f64 = (((midx % half_mods) * mod_w) + (cidx * cab_width)) as f64;
             let y: f64 = if midx < half_mods { 0.0 } else { mod_h as f64 };
+            
+            context.set_stroke_style( &pattern.get_line_color() );
             context.move_to(x, y);
             context.line_to(x, y + mod_h as f64); 
             context.stroke();  
@@ -120,6 +122,7 @@ pub fn draw(pattern: &Pattern) {
             let label = &format!("{}{}", letters[(cidx % 27) as usize], midx+1);
             let text_x = x + (mod_w as f64/2.7);
             let text_y = y + (mod_h as f64/1.6);
+            context.set_stroke_style( &pattern.get_label_color() );
             match context.stroke_text_with_max_width(label, text_x , text_y, mod_w as f64) {
                 Err(e) => log(&format!("label error: {:#?}", e)),
                 _ => ()

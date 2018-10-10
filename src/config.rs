@@ -51,6 +51,10 @@ impl Pattern {
         self.mod_width * (self.mods_per_cabinet / 2)
     }
 
+    pub fn get_label_color(&self) -> &JsValue {
+        &self.label_color
+    }
+
     pub fn get_line_color(&self) -> &JsValue {
         &self.line_color
     }
