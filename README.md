@@ -10,3 +10,4 @@ The code is a sample app with examples of following:
 *  Rust adding an event listener to a button
 *  Rust creating an event handler with a closure
 
+[Slides](https://slides.com/rippinrobr/rust-wasm-101#/) 
